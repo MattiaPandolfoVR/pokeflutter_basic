@@ -4,26 +4,27 @@ class Pkmn {
     this.name,
     this.url,
     this.imageUrl,
-    this.order,
-    this.hp,
-    this.attack,
-    this.defense,
-    this.spAttack,
-    this.spDefense,
-    this.speed,
-    this.type1,
   });
 
-  final int? id;
-  final String? name;
-  final String? url;
-  final String? imageUrl;
-  final int? order;
-  final int? hp;
-  final int? attack;
-  final int? defense;
-  final int? spAttack;
-  final int? spDefense;
-  final int? speed;
-  final String? type1;
+  int? id;
+  String? name;
+  String? url;
+  String? imageUrl;
+
+  Pkmn.fromJson(dynamic json) {
+    url = json['url'];
+    id = int.parse(url!.split('/')[6]);
+    name = json['name'];
+    imageUrl =
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png";
+  }
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = id;
+    map['name'] = name;
+    map['url'] = url;
+    map['imageUrl'] = imageUrl;
+    return map;
+  }
 }
