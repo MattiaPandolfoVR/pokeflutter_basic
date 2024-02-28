@@ -22,12 +22,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    ftrPkmnList = _fetchListOfPokemon(0);
+    ftrPkmnList = _fetchListOfPokemon();
   }
 
-  Future<List<Pkmn>> _fetchListOfPokemon(int pageIndex) async {
-    final response = await http.get(Uri.https(pokeApidomain, '/api/v2/pokemon',
-        {'limit': '1302', 'offset': (pageIndex * 14).toString()}));
+  Future<List<Pkmn>> _fetchListOfPokemon() async {
+    final response = await http
+        .get(Uri.https(pokeApidomain, '/api/v2/pokemon', {'limit': '1302'}));
     if (response.statusCode == 200) {
       final pkmnListJson =
           json.decode(response.body)['results'] as List<dynamic>;
