@@ -92,7 +92,6 @@ Future<Pkmn> fetchPokemonDetails(String id) async {
     //   return Pkmn(type2: pkmnType2);
     // }
     //List<dynamic>; //['type']['name'] as List<dynamic>;
-    print(pkmnType1);
 
     final pkmnImage =
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$pkmnID.png"; // artworks
