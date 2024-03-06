@@ -11,9 +11,6 @@ class AppRouter extends $AppRouter {
           initial: true,
         ),
         AutoRoute(
-          page: DexView.page,
-        ),
-        AutoRoute(
           page: PkmnView.page,
         ),
       ];

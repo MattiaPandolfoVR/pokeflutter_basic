@@ -1,111 +1,157 @@
-class PkmnDetails {
-  int? id;
-  String? name;
-  String? imageUrl;
-  List<Stats>? stats;
-  List<Types>? types;
+import 'dart:convert';
 
-  PkmnDetails({
-    id,
-    name,
-    imageUrl,
-    stats,
-    types,
+PokemonDetails pokemonDetailsFromJson(String str) =>
+    PokemonDetails.fromJson(json.decode(str));
+
+String pokemonDetailsToJson(PokemonDetails data) => json.encode(data.toJson());
+
+class PokemonDetails {
+  int id;
+  String name;
+  Sprites sprites;
+  List<Stat> stats;
+  List<Type> types;
+
+  List<Stat> get getStats => stats;
+
+  PokemonDetails({
+    required this.id,
+    required this.name,
+    required this.sprites,
+    required this.stats,
+    required this.types,
   });
 
-  PkmnDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    imageUrl =
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png";
-    if (json['stats'] != null) {
-      stats = <Stats>[];
-      json['stats'].forEach((v) {
-        stats!.add(Stats.fromJson(v));
-      });
-    }
-    if (json['types'] != null) {
-      types = <Types>[];
-      json['types'].forEach((v) {
-        types!.add(Types.fromJson(v));
-      });
-    }
-  }
+  factory PokemonDetails.fromJson(Map<String, dynamic> json) => PokemonDetails(
+        id: json["id"],
+        name: json["name"],
+        sprites: Sprites.fromJson(json["sprites"]),
+        stats: List<Stat>.from(json["stats"].map((x) => Stat.fromJson(x))),
+        types: List<Type>.from(json["types"].map((x) => Type.fromJson(x))),
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['name'] = name;
-    if (stats != null) {
-      data['stats'] = stats!.map((v) => v.toJson()).toList();
-    }
-    if (types != null) {
-      data['types'] = types!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "sprites": sprites.toJson(),
+        "stats": List<dynamic>.from(stats.map((x) => x.toJson())),
+        "types": List<dynamic>.from(types.map((x) => x.toJson())),
+      };
 }
 
 class Utils {
-  String? name;
-  String? url;
+  String name;
+  String url;
 
-  Utils({name, url});
+  Utils({
+    required this.name,
+    required this.url,
+  });
 
-  Utils.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    url = json['url'];
-  }
+  factory Utils.fromJson(Map<String, dynamic> json) => Utils(
+        name: json["name"],
+        url: json["url"],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['name'] = name;
-    data['url'] = url;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "url": url,
+      };
 }
 
-class Stats {
-  int? baseStat;
-  int? effort;
-  Utils? stat;
+class Other {
+  OfficialArtwork officialArtwork;
 
-  Stats({baseStat, effort, stat});
+  Other({
+    required this.officialArtwork,
+  });
 
-  Stats.fromJson(Map<String, dynamic> json) {
-    baseStat = json['base_stat'];
-    effort = json['effort'];
-    stat = json['stat'] != null ? Utils.fromJson(json['stat']) : null;
-  }
+  factory Other.fromJson(Map<String, dynamic> json) => Other(
+        officialArtwork: OfficialArtwork.fromJson(json["official-artwork"]),
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['base_stat'] = baseStat;
-    data['effort'] = effort;
-    if (stat != null) {
-      data['stat'] = stat!.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "official-artwork": officialArtwork.toJson(),
+      };
 }
 
-class Types {
-  int? slot;
-  Utils? type;
+class Sprites {
+  Other? other;
 
-  Types({slot, type});
+  Sprites({
+    this.other,
+  });
 
-  Types.fromJson(Map<String, dynamic> json) {
-    slot = json['slot'];
-    type = json['type'] != null ? Utils.fromJson(json['type']) : null;
-  }
+  factory Sprites.fromJson(Map<String, dynamic> json) => Sprites(
+        other: json["other"] == null ? null : Other.fromJson(json["other"]),
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['slot'] = slot;
-    if (type != null) {
-      data['type'] = type!.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "other": other?.toJson(),
+      };
+}
+
+class OfficialArtwork {
+  String frontDefault;
+  String frontShiny;
+
+  OfficialArtwork({
+    required this.frontDefault,
+    required this.frontShiny,
+  });
+
+  factory OfficialArtwork.fromJson(Map<String, dynamic> json) =>
+      OfficialArtwork(
+        frontDefault: json["front_default"],
+        frontShiny: json["front_shiny"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "front_default": frontDefault,
+        "front_shiny": frontShiny,
+      };
+}
+
+class Stat {
+  int baseStat;
+  int effort;
+  Utils stat;
+
+  Stat({
+    required this.baseStat,
+    required this.effort,
+    required this.stat,
+  });
+
+  factory Stat.fromJson(Map<String, dynamic> json) => Stat(
+        baseStat: json["base_stat"],
+        effort: json["effort"],
+        stat: Utils.fromJson(json["stat"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "base_stat": baseStat,
+        "effort": effort,
+        "stat": stat.toJson(),
+      };
+}
+
+class Type {
+  int slot;
+  Utils type;
+
+  Type({
+    required this.slot,
+    required this.type,
+  });
+
+  factory Type.fromJson(Map<String, dynamic> json) => Type(
+        slot: json["slot"],
+        type: Utils.fromJson(json["type"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "slot": slot,
+        "type": type.toJson(),
+      };
 }
