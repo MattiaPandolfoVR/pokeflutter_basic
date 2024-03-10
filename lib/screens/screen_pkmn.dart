@@ -39,7 +39,13 @@ class PkmnView extends StatelessWidget {
         children: [
           Hero(
             tag: id,
-            child: FadeInImage(
+            child:
+                // Image.network(
+                //   officialArtworkSprite,
+                //   fit: BoxFit.cover,
+                //   width: double.infinity,
+                //   height: 400,
+                FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(officialArtworkSprite),
               fit: BoxFit.cover,

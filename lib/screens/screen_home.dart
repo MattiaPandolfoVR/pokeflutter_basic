@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_autoroute/model/pkmn.dart';
 
 import 'package:pokemon_autoroute/routes/app_router.gr.dart';
-import 'package:pokemon_autoroute/utils/fetch_combined.dart';
+import 'package:pokemon_autoroute/utils/fetch_pkmn.dart';
 import 'package:pokemon_autoroute/utils/string_extension.dart';
 
 @RoutePage()
@@ -77,7 +77,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 238, 21, 21),

@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   auto_route: ^7.8.4
   http: ^1.2.1
+  retrofit: ^4.1.0
+  logger:
+  json_annotation: ^4.8.1
   transparent_image: ^2.0.1
 
 dev_dependencies:
@@ -50,7 +53,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
   auto_route_generator: ^7.3.2
-  build_runner:
+  retrofit_generator: ^8.1.0   #// required dart >=2.19
+  build_runner: '>=2.3.0 <4.0.0'
+  json_serializable: ^6.6.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
