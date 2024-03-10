@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i4;
+import 'package:pokemon_autoroute/model/pkmn.dart' as _i5;
 import 'package:pokemon_autoroute/screens/screen_home.dart' as _i1;
 import 'package:pokemon_autoroute/screens/screen_pkmn.dart' as _i2;
 
@@ -31,6 +32,10 @@ abstract class $AppRouter extends _i3.RootStackRouter {
         child: _i2.PkmnView(
           key: args.key,
           id: args.id,
+          name: args.name,
+          officialArtworkSprite: args.officialArtworkSprite,
+          stats: args.stats,
+          types: args.types,
         ),
       );
     },
@@ -56,13 +61,21 @@ class HomeView extends _i3.PageRouteInfo<void> {
 class PkmnView extends _i3.PageRouteInfo<PkmnViewArgs> {
   PkmnView({
     _i4.Key? key,
-    required String id,
+    required int id,
+    required String name,
+    required String officialArtworkSprite,
+    required List<_i5.PokemonStat> stats,
+    required List<_i5.PokemonType> types,
     List<_i3.PageRouteInfo>? children,
   }) : super(
           PkmnView.name,
           args: PkmnViewArgs(
             key: key,
             id: id,
+            name: name,
+            officialArtworkSprite: officialArtworkSprite,
+            stats: stats,
+            types: types,
           ),
           initialChildren: children,
         );
@@ -77,14 +90,26 @@ class PkmnViewArgs {
   const PkmnViewArgs({
     this.key,
     required this.id,
+    required this.name,
+    required this.officialArtworkSprite,
+    required this.stats,
+    required this.types,
   });
 
   final _i4.Key? key;
 
-  final String id;
+  final int id;
+
+  final String name;
+
+  final String officialArtworkSprite;
+
+  final List<_i5.PokemonStat> stats;
+
+  final List<_i5.PokemonType> types;
 
   @override
   String toString() {
-    return 'PkmnViewArgs{key: $key, id: $id}';
+    return 'PkmnViewArgs{key: $key, id: $id, name: $name, officialArtworkSprite: $officialArtworkSprite, stats: $stats, types: $types}';
   }
 }

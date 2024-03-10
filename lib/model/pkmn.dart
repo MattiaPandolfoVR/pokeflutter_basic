@@ -1,111 +1,202 @@
-// class Pkmn {
-//   Pkmn({
-//     this.id,
-//     this.name,
-//     this.url,
-//     this.imageUrl,
-//   });
-
-//   int? id;
-//   String? name;
-//   String? url;
-//   String? imageUrl;
-
-//   Pkmn.fromJson(dynamic json) {
-//     url = json['url'];
-//     id = int.parse(url!.split('/')[6]);
-//     name = json['name'];
-//     imageUrl =
-//         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png";
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final map = <String, dynamic>{};
-//     map['id'] = id;
-//     map['name'] = name;
-//     map['url'] = url;
-//     map['imageUrl'] = imageUrl;
-//     return map;
-//   }
-// }
+/* Questo funziona */
 
 class PokemonResults {
-  PokemonResults({
-    required this.name,
-    required this.url,
-    //required this.sprites,
-  });
+  List<PokemonListResult> pokemonList;
+  PokemonDetails? specificPokemonDetails;
 
+  PokemonResults({required this.pokemonList, this.specificPokemonDetails});
+
+  factory PokemonResults.fromJson(Map<String, dynamic> json) {
+    var resultsList = json['results'] as List;
+    List<PokemonListResult> pokemonListItems =
+        resultsList.map((e) => PokemonListResult.fromJson(e)).toList();
+
+    return PokemonResults(pokemonList: pokemonListItems);
+  }
+
+  void setSpecificPokemonDetails(PokemonDetails details) {
+    specificPokemonDetails = details;
+  }
+}
+
+class PokemonListResult {
   String name;
   String url;
-  //Sprites sprites;
 
   String get getName => name;
 
-  factory PokemonResults.fromJson(Map<String, dynamic> json) {
-    return PokemonResults(
+  PokemonListResult({required this.name, required this.url});
+
+  factory PokemonListResult.fromJson(Map<String, dynamic> json) {
+    return PokemonListResult(
       name: json['name'],
       url: json['url'],
-      //sprites: Sprites.fromJson(json["sprites"]),
     );
   }
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "url": url,
-        //"sprites": sprites.toJson(),
-      };
 }
 
-// class Other {
-//   OfficialArtwork officialArtwork;
+class PokemonDetails {
+  int id;
+  String name;
+  int order;
+  String officialArtworkSprite;
+  List<PokemonStat> stats;
+  List<PokemonType> types;
 
-//   Other({
-//     required this.officialArtwork,
-//   });
+  PokemonDetails(
+      {required this.id,
+      required this.name,
+      required this.order,
+      required this.officialArtworkSprite,
+      required this.stats,
+      required this.types});
 
-//   factory Other.fromJson(Map<String, dynamic> json) => Other(
-//         officialArtwork: OfficialArtwork.fromJson(json["official-artwork"]),
-//       );
+  factory PokemonDetails.fromJson(Map<String, dynamic> json) {
+    var statsList = json['stats'] as List;
+    List<PokemonStat> pokemonStats =
+        statsList.map((e) => PokemonStat.fromJson(e)).toList();
+    var typesList = json['types'] as List;
+    List<PokemonType> pokemonTypes =
+        typesList.map((e) => PokemonType.fromJson(e)).toList();
 
-//   Map<String, dynamic> toJson() => {
-//         "official-artwork": officialArtwork.toJson(),
-//       };
+    return PokemonDetails(
+        id: json['id'],
+        name: json['name'],
+        order: json['order'],
+        officialArtworkSprite: json['sprites']['other']['official-artwork']
+            ['front_default'],
+        stats: pokemonStats,
+        types: pokemonTypes);
+  }
+}
+
+class PokemonStat {
+  String name;
+  int baseStats;
+
+  PokemonStat({required this.name, required this.baseStats});
+
+  factory PokemonStat.fromJson(Map<String, dynamic> json) {
+    return PokemonStat(
+      name: json['stat']['name'],
+      baseStats: json['base_stat'],
+    );
+  }
+}
+
+class PokemonType {
+  String name;
+
+  PokemonType({required this.name});
+
+  factory PokemonType.fromJson(Map<String, dynamic> json) {
+    return PokemonType(
+      name: json['type']['name'],
+    );
+  }
+}
+
+// // pokemon_combined_model.dart
+// import 'package:pokemon_autoroute/model/pkmn_details.dart';
+
+// class PokemonResults {
+//   List<Pokemon> pokemonList;
+
+//   PokemonResults({required this.pokemonList});
+
+//   factory PokemonResults.fromJson(Map<String, dynamic> json) {
+//     var resultsList = json['results'] as List;
+//     List<Pokemon> pokemonList =
+//         resultsList.map((e) => Pokemon.fromJson(e)).toList();
+
+//     return PokemonResults(
+//       pokemonList: pokemonList,
+//     );
+//   }
+//   void setSpecificPokemonDetails(List<Pokemon> details) {
+//     pokemonList = details;
+//   }
 // }
 
-// class Sprites {
-//   Other? other;
+// class Pokemon {
+//   String name;
+//   String url;
+//   PokemonDetails details;
 
-//   Sprites({
-//     this.other,
-//   });
+//   PokemonDetails get detail => details;
 
-//   factory Sprites.fromJson(Map<String, dynamic> json) => Sprites(
-//         other: json["other"] == null ? null : Other.fromJson(json["other"]),
-//       );
+//   Pokemon({required this.name, required this.url, required this.details});
 
-//   Map<String, dynamic> toJson() => {
-//         "other": other?.toJson(),
-//       };
+//   factory Pokemon.fromJson(Map<String, dynamic> json) {
+//     return Pokemon(
+//       name: json['name'],
+//       url: json['url'],
+//       details: PokemonDetails.fromJson(json['details']),
+//     );
+//   }
+//   int get id => details.id;
+//   String get detailName => details.name;
+//   String get officialArtworkSprite => details.officialArtworkSprite;
+//   List<PokemonStat> get stats => details.stats;
+//   List<PokemonType> get types => details.types;
 // }
 
-// class OfficialArtwork {
-//   String frontDefault;
-//   String frontShiny;
+// class PokemonDetails {
+//   int id;
+//   String name;
+//   String officialArtworkSprite;
+//   List<PokemonStat> stats;
+//   List<PokemonType> types;
 
-//   OfficialArtwork({
-//     required this.frontDefault,
-//     required this.frontShiny,
-//   });
+//   PokemonDetails(
+//       {required this.id,
+//       required this.name,
+//       required this.officialArtworkSprite,
+//       required this.stats,
+//       required this.types});
 
-//   factory OfficialArtwork.fromJson(Map<String, dynamic> json) =>
-//       OfficialArtwork(
-//         frontDefault: json["front_default"],
-//         frontShiny: json["front_shiny"],
-//       );
+//   factory PokemonDetails.fromJson(Map<String, dynamic> json) {
+//     var statsList = json['stats'] as List;
+//     List<PokemonStat> pokemonStats =
+//         statsList.map((e) => PokemonStat.fromJson(e)).toList();
 
-//   Map<String, dynamic> toJson() => {
-//         "front_default": frontDefault,
-//         "front_shiny": frontShiny,
-//       };
+//     var typesList = json['types'] as List;
+//     List<PokemonType> pokemonTypes =
+//         typesList.map((e) => PokemonType.fromJson(e)).toList();
+
+//     return PokemonDetails(
+//       id: json['id'],
+//       name: json['name'],
+//       officialArtworkSprite: json['sprites']['other']['official-artwork']
+//           ['front_default'],
+//       stats: pokemonStats,
+//       types: pokemonTypes,
+//     );
+//   }
+// }
+
+// class PokemonStat {
+//   String name;
+//   int baseStat;
+
+//   PokemonStat({required this.name, required this.baseStat});
+
+//   factory PokemonStat.fromJson(Map<String, dynamic> json) {
+//     return PokemonStat(
+//       name: json['stat']['name'],
+//       baseStat: json['base_stat'],
+//     );
+//   }
+// }
+
+// class PokemonType {
+//   String name;
+
+//   PokemonType({required this.name});
+
+//   factory PokemonType.fromJson(Map<String, dynamic> json) {
+//     return PokemonType(
+//       name: json['type']['name'],
+//     );
+//   }
 // }

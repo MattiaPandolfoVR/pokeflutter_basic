@@ -44,3 +44,5 @@ app.*.map.json
 lib/model/pkmn_detail_safe.dart
 lib/model/pokemon_safe.dart
 lib/screens/screen_home_fetch_inside.dart
+lib/screens/screen_home_future_builder.dart
+lib/screens/screen_home_provider.dart
