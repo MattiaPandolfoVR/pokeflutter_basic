@@ -1,4 +1,5 @@
 import 'package:pokemon_autoroute/model/pkmn.dart';
+import 'package:pokemon_autoroute/model/pkmn_type_color.dart';
 
 import "../utils/string_extension.dart";
 import 'package:auto_route/auto_route.dart';
@@ -57,7 +58,10 @@ class PkmnView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: types
                   .map((t) => FilterChip(
-                      label: Text(t.name.toCapitalized()), onSelected: (b) {}))
+                        label: Text(t.name.toCapitalized()),
+                        onSelected: (b) {},
+                        backgroundColor: PokeColor.getColorFor(t.name),
+                      ))
                   .toList()),
           const SizedBox(height: 10),
           Padding(
